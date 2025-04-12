@@ -4,6 +4,7 @@
     {
         public Guid Id { get; set; }
         public Guid ConsumerId { get; set; }
+        public Guid SubscriberId { get; set; }
         public string Name { get; set; }
         public string Designation { get; set; }
         public DateTime StartDate { get; set; }

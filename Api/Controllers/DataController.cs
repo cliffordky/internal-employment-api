@@ -1,9 +1,8 @@
-﻿using Ardalis.Result.AspNetCore;
-using Ardalis.Result;
+﻿using Ardalis.Result;
+using Ardalis.Result.AspNetCore;
 using Coravel.Cache.Interfaces;
 using Marten;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Api.Controllers
 {
@@ -31,6 +30,7 @@ namespace Api.Controllers
                 var address = new Core.Models.Employment(
                         Guid.NewGuid(),
                         request.ConsumerId,
+                        request.SubscriberId,
                         request.Name,
                         request.Designation,
                         request.StartDate.ToString(),
@@ -47,6 +47,7 @@ namespace Api.Controllers
                 {
                     Id = address.Id,
                     ConsumerId = address.ConsumerId,
+                    SubscriberId = address.SubscriberId,
                     Name = address.Name,
                     Designation = address.Designation,
                     StartDate = DateTime.Parse(address.StartDate),
@@ -75,6 +76,7 @@ namespace Api.Controllers
                     {
                         Id = x.Id,
                         ConsumerId = x.ConsumerId,
+                        SubscriberId = x.SubscriberId,
                         Name = x.Name,
                         Designation = x.Designation,
                         StartDate = DateTime.Parse(x.StartDate),
