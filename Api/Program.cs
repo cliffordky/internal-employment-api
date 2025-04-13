@@ -52,7 +52,7 @@ namespace Api
                     .AddEncryptionRuleForProtectedInformation(x => x.Designation)
                     .AddEncryptionRuleForProtectedInformation(x => x.StartDate)
                     .AddEncryptionRuleForProtectedInformation(x => x.TerminationDate)
-                    .AddEncryptionRuleForProtectedInformation(x => x.EmploymentTypeId);
+                    .AddEncryptionRuleForProtectedInformation(x => x.EmploymentTypeCode);
                 // If we're running in development mode, let Marten just take care
                 // of all necessary schema building and patching behind the scenes
                 if (builder.Environment.IsDevelopment())

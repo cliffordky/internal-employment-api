@@ -8,7 +8,7 @@
         public string Designation { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime TerminationDate { get; set; }
-        public int EmploymentTypeId { get; set; }
+        public string EmploymentTypeCode { get; set; }
         public DateTimeOffset RecordDate { get; set; }
     }
 }

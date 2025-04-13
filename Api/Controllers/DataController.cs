@@ -27,6 +27,22 @@ namespace Api.Controllers
         {
             try
             {
+                string hash = Core.Encryption.Hash.GetHashString(request.ConsumerId.ToString() +
+                    request.SubscriberId.ToString() +
+                    request.Name +
+                    request.Designation +
+                    request.StartDate.ToString() +
+                    request.TerminationDate.ToString() +
+                    request.EmploymentTypeCode+
+                    request.RecordDate);
+
+                await using var session = _store.LightweightSession();
+                var existing = await session.Query<Core.Models.Employment>().SingleOrDefaultAsync(x => x.Hash == hash);
+                if (existing != null)
+                {
+                    return Result<Models.v1.EmploymentResponse>.Error("Employment already exists");
+                }
+
                 var address = new Core.Models.Employment(
                         Guid.NewGuid(),
                         request.ConsumerId,
@@ -35,11 +51,11 @@ namespace Api.Controllers
                         request.Designation,
                         request.StartDate.ToString(),
                         request.TerminationDate.ToString(),
-                        request.EmploymentTypeId.ToString(),
-                        request.RecordDate
+                        request.EmploymentTypeCode,
+                        request.RecordDate,
+                        hash
                     );
 
-                await using var session = _store.LightweightSession();
                 session.Store(address);
                 await session.SaveChangesAsync();
 
@@ -52,7 +68,7 @@ namespace Api.Controllers
                     Designation = address.Designation,
                     StartDate = DateTime.Parse(address.StartDate),
                     TerminationDate = DateTime.Parse(address.TerminationDate),
-                    EmploymentTypeId = Int32.Parse(address.EmploymentTypeId),
+                    EmploymentTypeCode = address.EmploymentTypeCode,
                     RecordDate = address.RecordDate
                 });
             }
@@ -81,7 +97,7 @@ namespace Api.Controllers
                         Designation = x.Designation,
                         StartDate = DateTime.Parse(x.StartDate),
                         TerminationDate = DateTime.Parse(x.TerminationDate),
-                        EmploymentTypeId = Int32.Parse(x.EmploymentTypeId),
+                        EmploymentTypeCode = x.EmploymentTypeCode,
                         RecordDate = x.RecordDate
                     }).ToList());
             }

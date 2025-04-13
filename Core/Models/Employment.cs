@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Core.Models
 {
-    public record Employment(Guid Id, Guid ConsumerId, Guid SubscriberId, string Name, string Designation, string StartDate, string TerminationDate, string EmploymentTypeId, DateTimeOffset RecordDate)
+    public record Employment(Guid Id, Guid ConsumerId, Guid SubscriberId, string Name, string Designation, string StartDate, string TerminationDate, string EmploymentTypeCode, DateTimeOffset RecordDate, string Hash)
         : IHasEncryptionKey
     {
         [JsonIgnore]
