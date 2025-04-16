@@ -35,7 +35,8 @@ namespace Api.Controllers
                     request.Designation +
                     request.StartDate.ToString() +
                     request.TerminationDate.ToString() +
-                    request.EmploymentTypeCode+
+                    request.EmploymentTypeCode +
+                     request.ISOA3CountryCode +
                     request.RecordDate);
 
                 await using var session = _store.LightweightSession();
@@ -72,6 +73,7 @@ namespace Api.Controllers
                     StartDate = DateOnly.Parse(address.StartDate),
                     TerminationDate = DateOnly.Parse(address.TerminationDate),
                     EmploymentTypeCode = address.EmploymentTypeCode,
+                    ISOA3CountryCode = address.ISOA3CountryCode,
                     RecordDate = address.RecordDate
                 });
             }
@@ -102,6 +104,7 @@ namespace Api.Controllers
                         StartDate = DateOnly.Parse(x.StartDate),
                         TerminationDate = DateOnly.Parse(x.TerminationDate),
                         EmploymentTypeCode = x.EmploymentTypeCode,
+                        ISOA3CountryCode = x.ISOA3CountryCode,
                         RecordDate = x.RecordDate
                     }).ToList());
             }
