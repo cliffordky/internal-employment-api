@@ -2,6 +2,7 @@
 using Ardalis.Result.AspNetCore;
 using Coravel.Cache.Interfaces;
 using Marten;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -21,6 +22,7 @@ namespace Api.Controllers
             _cache = cache;
         }
 
+        [Authorize("write")]
         [TranslateResultToActionResult]
         [HttpPost("employer")]
         public async Task<Result<Models.v1.EmploymentResponse>> AddEmployer(Models.v1.EmploymentRequest request)
@@ -79,6 +81,7 @@ namespace Api.Controllers
             }
         }
 
+        [Authorize("read")]
         [TranslateResultToActionResult]
         [HttpGet("employers")]
         public async Task<Result<List<Models.v1.EmploymentResponse>>> GetEmployersForConsumer(Guid ConsumerId)

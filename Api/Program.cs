@@ -1,6 +1,7 @@
 using Coravel;
 using Core.Encryption;
 using Core.Models;
+using dordle.common.service.Extensions;
 using Marten;
 using Serilog;
 using Weasel.Core;
@@ -11,27 +12,18 @@ namespace Api
     {
         public static void Main(string[] args)
         {
-            const string key = "tKDM8/ZCTZkRtKi7ZKDALBTEE/+WmMA5SEpWp02Y0qs=";
-            const string iv = "L/G6cEvpCK/0XUS2kWsKoA==";
-
-            // Create an instance of the encryption service
-            var encryptionService = new AesEncryptionService(key, iv);
-
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            //Add JWT authentication supporting the "Client Credentials" flow
+            builder.Services.AddClientCredentialsAuthentication(builder.Configuration);
+            builder.Services.AddClientCredentialsAuthorization(builder.Configuration);
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c =>
+            builder.Services.AddSwaggerGenWithClientCredentials(builder.Configuration, options =>
             {
-                c.IncludeXmlComments(string.Format(@"{0}\Api.xml", System.AppDomain.CurrentDomain.BaseDirectory));
-                //c.SwaggerDoc("v1", new OpenApiInfo
-                //{
-                //    Version = "v1",
-                //    Title = "Api"
-                //});
+                options.IncludeXmlComments(string.Format(@"{0}\Api.xml", System.AppDomain.CurrentDomain.BaseDirectory));
             });
 
             builder.Services.AddCache();
@@ -45,7 +37,8 @@ namespace Api
 
                 // Specify that we want to use STJ as our serializer
                 //options.UseSystemTextJsonForSerialization();
-                options.UseEncryptionRulesForProtectedInformation(encryptionService);
+                var encrypt = builder.Configuration.GetSection(EncryptionOptions.ConfigKey).Get<EncryptionOptions>()!;
+                options.UseEncryptionRulesForProtectedInformation(new AesEncryptionService(encrypt.Key, encrypt.Salt));
 
                 options.Schema.For<Employment>()
                     .AddEncryptionRuleForProtectedInformation(x => x.Name)
@@ -82,6 +75,7 @@ namespace Api
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
