@@ -50,8 +50,9 @@ namespace Api.Controllers
                         request.Name,
                         request.Designation,
                         request.StartDate.ToString(),
-                        request.TerminationDate.ToString(),
+                        request.TerminationDate?.ToString(),
                         request.EmploymentTypeCode,
+                        request.ISOA3CountryCode,
                         request.RecordDate,
                         hash
                     );
@@ -66,8 +67,8 @@ namespace Api.Controllers
                     SubscriberId = address.SubscriberId,
                     Name = address.Name,
                     Designation = address.Designation,
-                    StartDate = DateTime.Parse(address.StartDate),
-                    TerminationDate = DateTime.Parse(address.TerminationDate),
+                    StartDate = DateOnly.Parse(address.StartDate),
+                    TerminationDate = DateOnly.Parse(address.TerminationDate),
                     EmploymentTypeCode = address.EmploymentTypeCode,
                     RecordDate = address.RecordDate
                 });
@@ -95,8 +96,8 @@ namespace Api.Controllers
                         SubscriberId = x.SubscriberId,
                         Name = x.Name,
                         Designation = x.Designation,
-                        StartDate = DateTime.Parse(x.StartDate),
-                        TerminationDate = DateTime.Parse(x.TerminationDate),
+                        StartDate = DateOnly.Parse(x.StartDate),
+                        TerminationDate = DateOnly.Parse(x.TerminationDate),
                         EmploymentTypeCode = x.EmploymentTypeCode,
                         RecordDate = x.RecordDate
                     }).ToList());
