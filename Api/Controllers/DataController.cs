@@ -22,7 +22,8 @@ namespace Api.Controllers
             _cache = cache;
         }
 
-        [Authorize("write")]
+        //[Authorize("write")]
+        [Authorize]
         [TranslateResultToActionResult]
         [HttpPost("employer")]
         public async Task<Result<Models.v1.EmploymentResponse>> AddEmployer(Models.v1.EmploymentRequest request)
@@ -83,7 +84,8 @@ namespace Api.Controllers
             }
         }
 
-        [Authorize("read")]
+        //[Authorize("read")]
+        [Authorize]
         [TranslateResultToActionResult]
         [HttpGet("employers")]
         public async Task<Result<List<Models.v1.EmploymentResponse>>> GetEmployersForConsumer(Guid ConsumerId)
