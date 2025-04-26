@@ -104,7 +104,7 @@ namespace Api.Controllers
                         SubscriberId = x.SubscriberId,
                         Name = x.Name,
                         Designation = x.Designation,
-                        StartDate = DateOnly.TryParse(x.StartDate, out DateOnly sd) ? sd : null,
+                        StartDate = DateOnly.Parse(x.StartDate),
                         TerminationDate = DateOnly.TryParse(x.TerminationDate, out DateOnly td) ? td : null,
                         EmploymentTypeCode = x.EmploymentTypeCode,
                         ISOA3CountryCode = x.ISOA3CountryCode,
