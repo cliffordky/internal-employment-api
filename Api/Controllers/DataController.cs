@@ -4,6 +4,7 @@ using Coravel.Cache.Interfaces;
 using Marten;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Api.Controllers
 {
@@ -72,7 +73,7 @@ namespace Api.Controllers
                     Name = address.Name,
                     Designation = address.Designation,
                     StartDate = DateOnly.Parse(address.StartDate),
-                    TerminationDate = DateOnly.Parse(address.TerminationDate),
+                    TerminationDate = DateOnly.TryParse(address.TerminationDate, out DateOnly result) ? result : null,
                     EmploymentTypeCode = address.EmploymentTypeCode,
                     ISOA3CountryCode = address.ISOA3CountryCode,
                     RecordDate = address.RecordDate
@@ -103,8 +104,8 @@ namespace Api.Controllers
                         SubscriberId = x.SubscriberId,
                         Name = x.Name,
                         Designation = x.Designation,
-                        StartDate = DateOnly.Parse(x.StartDate),
-                        TerminationDate = DateOnly.Parse(x.TerminationDate),
+                        StartDate = DateOnly.TryParse(x.StartDate, out DateOnly sd) ? sd : null,
+                        TerminationDate = DateOnly.TryParse(x.TerminationDate, out DateOnly td) ? td : null,
                         EmploymentTypeCode = x.EmploymentTypeCode,
                         ISOA3CountryCode = x.ISOA3CountryCode,
                         RecordDate = x.RecordDate
